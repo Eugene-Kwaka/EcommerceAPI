@@ -16,4 +16,9 @@ urlpatterns = [
     path('products', ProductList.as_view(), name="products"),
     # Path to display the details of a specific product
     path('products/<int:pk>/', ProductDetail.as_view(), name="product"), 
+
+    # Path that will display users carts
+    path('carts', CartList.as_view(), name="carts"),
+    # Path to display the details of a specific product
+    path('cart/<int:pk>/', CartDetail.as_view(), name="cartdetail"),
 ]

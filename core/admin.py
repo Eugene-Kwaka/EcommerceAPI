@@ -4,3 +4,4 @@ from core.models import *
 admin.site.register(Category)
 admin.site.register(Book)
 admin.site.register(Product)
+admin.site.register(Cart)

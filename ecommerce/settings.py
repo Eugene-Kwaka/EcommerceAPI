@@ -19,8 +19,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # CORS Configuration
+    'corsheaders',
     'core',
     'rest_framework',
+    # for auth-token authentication
+    'rest_framework.authtoken',
 
     'django.contrib.humanize',
     'django.contrib.admin',
@@ -31,9 +35,39 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# AUTHTOKEN CONFIGURATION
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+CORS_ALLOWED_ORIGINS = [
+"https://www.website.com",
+"http://127.0.0.1:8000",
+# For REACT framework
+"http://localhost:3000",
+# For ANGULAR framework
+"http://localhost:4200",
+"https://web.postman.co",
+]
+
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
+]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # The CORS Middleware must be placed before other response/request processors eg the CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
