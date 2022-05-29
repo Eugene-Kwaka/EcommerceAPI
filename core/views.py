@@ -1,17 +1,35 @@
 from django.shortcuts import render
-#from rest_framework import mixins
 from core.models import *
 from rest_framework import generics
 from core.serializers import *
-from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
-
-# Create your views here.
-# class ListCategory(generics.ListAPIView, mixins.ListModelMixin):
-#     serializer_class = CategorySerializer
-#     categories = Category.objects.all()
+from rest_framework.response import Response
+import uuid
+from rest_framework import status
 
 
+# REGISTRATION VIEW
+class RegistrationAPIView(generics.GenericAPIView):
+    serializer_class = RegistrationSerializer
+# Post method to create the User
+    def post(self, request):
+        # serialize the data instance used for validating and deserializing input and serializing output
+        serializer = self.get_serializer(data = request.data)
+        # check if serializer is valid then save and return responses
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "RequestId": str(uuid.uuid4()),
+                "Message" : "User Created Successfully",
+                "User": serializer.data, 
+            },
+            # status to show the serializer object has been created
+            status=status.HTTP_201_CREATED
+            )
+        # Else return an error of Bad Request
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
 # Class-based view to list elements of a model
 class CategoryList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
